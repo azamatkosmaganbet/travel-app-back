@@ -6,7 +6,7 @@ const tokenService = require("./token-service");
 const UserDto = require("../dtos/user-dto");
 const ApiError = require("../exceptions/api-error");
 class UserService {
-  async registration(email, password) {
+  async registration(email, password, name, surname, phone) {
     const candidate = await UserModel.findOne({ email });
     if (candidate) {
       throw ApiError.BadRequest(`Пользователь с таким ${email} уже существует`);
@@ -16,6 +16,9 @@ class UserService {
 
     const user = await UserModel.create({
       email,
+      name,
+      surname,
+      phone,
       password: hashPassword,
       activationLink,
     });
