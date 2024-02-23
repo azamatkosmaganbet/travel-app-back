@@ -5,6 +5,8 @@ const mailService = require("./mail-service");
 const tokenService = require("./token-service");
 const UserDto = require("../dtos/user-dto");
 const ApiError = require("../exceptions/api-error");
+
+
 class UserService {
   async registration(email, password, name, surname, phone) {
     const candidate = await UserModel.findOne({ email });
@@ -84,6 +86,27 @@ class UserService {
   async getAllUsers() {
     const users = await UserModel.find();
     return users;
+  }
+
+  async updateAvatar(userId, file) {
+    try {
+      const user = await UserModel.findById(userId);
+
+      if (!user) {
+        throw ApiError.NotFound("Пользователь не найден");
+      }
+
+      // Обновление изображения аватара
+      const imagePath = `avatars/${file.filename}`;
+
+      // Обновление записи в базе данных
+      user.avatar = imagePath;
+      await user.save();
+
+      return new UserDto(user); // Вернуть обновленного пользователя
+    } catch (error) {
+      throw error;
+    }
   }
 }
 

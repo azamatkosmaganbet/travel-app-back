@@ -58,7 +58,9 @@ class UserController {
     try {
       const activationLink = req.params.link;
       await userService.activate(activationLink);
-      return res.redirect(process.env.CLIENT_URL);
+      return res.redirect(
+        `${process.env.CLIENT_URL}/verification/${req.params.link}`
+      );
     } catch (e) {
       next(e);
     }
@@ -84,6 +86,19 @@ class UserController {
       return res.json(users);
     } catch (e) {
       next(e);
+    }
+  }
+
+  async updateAvatar(req, res, next) {
+    try {
+      const { userId } = req.params;
+      const { file } = req; // Предполагается, что файл изображения передается через multer
+
+      const updatedUser = await userService.updateAvatar(userId, file);
+
+      return res.json(updatedUser);
+    } catch (error) {
+      next(error);
     }
   }
 }

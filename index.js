@@ -18,6 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/api", router);
 app.use(errorMiddleware);
+app.use(express.static("public"));
 
 const start = async () => {
   try {
