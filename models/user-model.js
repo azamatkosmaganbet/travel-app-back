@@ -9,7 +9,17 @@ const UserSchema = new Schema({
   surname: { type: String },
   phone: { type: String, required: true },
   isActivated: { type: Boolean, default: false },
+  registerDate: { type: Date, default: new Date() },
   activationLink: { type: String },
+  role: {
+    type: String,
+    enum: ["tourist", "guide", "admin"],
+    default: "tourist",
+  },
+  description: { type: String },
+  aboutMe: { type: String },
+  location: { type: String },
+  guests: { type: String },
 });
 
 module.exports = model("User", UserSchema);
