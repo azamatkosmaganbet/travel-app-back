@@ -88,6 +88,11 @@ class UserService {
     return users;
   }
 
+  async getAllUsersByRole(role) {
+    const users = await UserModel.find({ role: role });
+    return users;
+  }
+
   async updateAvatar(userId, file) {
     try {
       const user = await UserModel.findById(userId);

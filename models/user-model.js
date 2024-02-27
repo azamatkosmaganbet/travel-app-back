@@ -14,7 +14,7 @@ const UserSchema = new Schema({
   role: {
     type: String,
     enum: ["tourist", "guide", "admin"],
-    default: "tourist",
+    default: "guide",
   },
   description: { type: String },
   aboutMe: { type: String },

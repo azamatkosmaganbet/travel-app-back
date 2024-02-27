@@ -28,6 +28,7 @@ router.post(
 router.get("/activate/:link", userController.activate);
 router.get("/refresh", userController.refresh);
 router.get("/users", userController.getUsers);
+router.get("/users/:role", userController.getUsersByRole);
 router.put(
   "/update/:userId",
   upload.single("file"),

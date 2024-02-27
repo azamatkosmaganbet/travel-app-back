@@ -89,6 +89,16 @@ class UserController {
     }
   }
 
+  async getUsersByRole(req, res, next) {
+    try {
+      const role = req.params.role; 
+      const users = await userService.getAllUsersByRole(role);
+      return res.json(users);
+    } catch (e) {
+      next(e);
+    }
+  }
+
   async updateAvatar(req, res, next) {
     try {
       const { userId } = req.params;
