@@ -16,9 +16,6 @@ const UserSchema = new Schema({
     enum: ["tourist", "guide", "admin"],
     default: "guide",
   },
-  // description: { type: String },
-  // aboutMe: { type: String },
-  // location: { type: String },
   guests: { type: String },
 });
 
