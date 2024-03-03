@@ -61,7 +61,7 @@ class UserController {
       const activationLink = req.params.link;
       await userService.activate(activationLink);
       return res.redirect(
-        `${process.env.CLIENT_URL}/verification/${req.params.link}`
+        `${process.env.CLIENT_URL}/verification`
       );
     } catch (e) {
       next(e);
