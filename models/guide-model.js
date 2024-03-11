@@ -11,7 +11,9 @@ const GuideSchema = new Schema({
   },
   languages: [{ type: String }],
   guests: { type: String },
+  interests: [{ type: String }],
   status: { type: String, default: "pending" },
+  trips: [{ type: Schema.Types.ObjectId, ref: "Trip" }],
 });
 
 module.exports = model("Guide", GuideSchema);
