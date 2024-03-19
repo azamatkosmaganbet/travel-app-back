@@ -53,6 +53,28 @@ class TripService {
       throw ApiError.BadRequest("Error retrieving trips", error);
     }
   }
+
+  async getTrip(id) {
+    try {
+      const trip = await TripModel.findById(id)
+        .populate("guide")
+        .populate({
+          path: "routes",
+          populate: {
+            path: "stops",
+          },
+        })
+        .populate("guide");;
+
+      if (!trip) { 
+        throw ApiError.BadRequest("Trip not found");
+      }
+
+      return trip
+    } catch (e) {
+      throw ApiError.BadRequest("Error retrieving trip", e);
+    }
+  }
 }
 
 module.exports = new TripService();

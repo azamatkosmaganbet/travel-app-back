@@ -2,6 +2,9 @@ const Router = require("express").Router;
 const userController = require("../controller/user-controller");
 const guideController = require("../controller/guide-controller");
 const tripController = require("../controller/trip-controller");
+const routeController = require("../controller/route-controller");
+const stopController = require("../controller/stop-controller");
+const bookingController = require("../controller/booking-controller");
 const router = new Router();
 const authMiddleware = require("../middlewares/auth-middleware");
 const roleMiddleware = require("../middlewares/role-middleware");
@@ -46,9 +49,13 @@ router.get("/users/:role", userController.getUsersByRole);
 router.get("/pending-guide-requests", guideController.getPendingGuideRequests);
 router.get("/guides", guideController.getGuides);
 router.get("/guide/:id", guideController.getGuideById);
-router.get("/guide/trip/:guideId", tripController.getTripsByGuideId )
+router.get("/guide/trip/:guideId", tripController.getTripsByGuideId);
+router.get("/trip/:id", tripController.getTrip);
 router.post("/create/trip", upload2.single("file"), tripController.createTrip);
 router.post("/send-guide-request", guideController.sendGuideRequest);
+router.post("/create/route", routeController.createRoute);
+router.post("/create/stop", upload2.single("file"), stopController.createStop);
+router.post("/create/booking", bookingController.createBooking);
 
 router.put(
   "/update/:userId",

@@ -23,6 +23,18 @@ class TripController {
       next(error);
     }
   }
+
+  async getTrip(req, res, next) {
+    const { id } = req.params;
+
+    try {
+      const trip = await TripService.getTrip(id);
+
+      res.status(200).json(trip);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new TripController();
