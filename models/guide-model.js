@@ -3,12 +3,14 @@ const bcrypt = require("bcrypt");
 
 const GuideSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  cities: [{ type: String }],
-  description: {type: String},
+  cities: [{ type: Schema.Types.ObjectId, ref: "City" }],
+  description: { type: String },
   socialMedia: {
     facebook: { type: String },
     instagram: { type: String },
-    twitter: { type: String },
+    youtube: { type: String },
+    vk: { type: String },
+    telegram: { type: String },
   },
   languages: [{ type: String }],
   guests: { type: String },

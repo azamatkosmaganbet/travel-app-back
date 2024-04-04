@@ -2,6 +2,8 @@ const GuideModel = require("../models/guide-model");
 const UserModel = require("../models/user-model");
 const ApiError = require("../exceptions/api-error");
 const TripModel = require("../models/trip-model");
+const CityModel = require("../models/city-model");
+
 class GuideService {
   async createGuideRequest(userId, data) {
     const existingRequest = await GuideModel.findOne({
@@ -31,25 +33,47 @@ class GuideService {
       requestId,
       { status },
       { new: true }
-    );
+    ).populate("userId");
   }
 
   async getPendingGuideRequests() {
-    return await GuideModel.find({ status: "pending" }).populate("userId");
+    return await GuideModel.find({ status: "pending" })
+      .populate({
+        path: "cities",
+        select: "name",
+      })
+      .populate("userId");
   }
 
   async getGuideById(id) {
-    const user = await GuideModel.findOne({ userId: id }).populate("userId");
+    const user = await GuideModel.findOne({ userId: id })
+      .populate("userId")
+      .populate("cities");
 
     return user;
   }
 
   async getGuides() {
-    const guides = await GuideModel.find().populate("userId");
+    const guides = await GuideModel.find()
+      .populate("userId")
+      .populate("cities");
 
     return guides;
   }
 
+  // async updateGuideRequestStatus(requestId, status) {
+  //   const updatedRequest = await GuideModel.findByIdAndUpdate(
+  //     requestId,
+  //     { status: "accepted" },
+  //     { new: true }
+  //   );
+
+  //   if (!updatedRequest) {
+  //     throw ApiError.BadRequest("Запрос не найден");
+  //   }
+
+  //   return updatedRequest;
+  // }
 }
 
 module.exports = new GuideService();

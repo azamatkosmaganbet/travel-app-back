@@ -1,5 +1,7 @@
 const ApiError = require("../exceptions/api-error");
 const guideService = require("../service/guide-service");
+const UserModel = require("../models/user-model");
+const mailService = require("../service/mail-service");
 const userService = require("../service/user-service");
 class GuideController {
   async sendGuideRequest(req, res, next) {
@@ -7,8 +9,13 @@ class GuideController {
       // Меняем на req.body, так как данные приходят в теле запроса
 
       const { userId, data } = req.body;
-
+      const user = await UserModel.findById(userId);
       await guideService.createGuideRequest(userId, data);
+
+      await mailService.sendGuideMail(
+        user.email,
+        "https://go-trip-all.netlify.app/"
+      );
 
       // Возвращаем ответ клиенту
       res.json({ success: true, message: "Запрос успешно отправлен" });
@@ -45,6 +52,34 @@ class GuideController {
     try {
       const users = await guideService.getGuides();
       return res.json(users);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async updateGuideRequestStatus(req, res, next) {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    try {
+      const updatedRequest = await guideService.updateGuideRequestStatus(
+        id,
+        status
+      );
+
+      if (status === "accepted") {
+        const user = await UserModel.findById(updatedRequest.userId);
+
+        user.role = "guide";
+        await user.save();
+
+        await mailService.sendStatusMail(
+          updatedRequest.userId.email,
+          "https://go-trip-all.netlify.app/"
+        );
+      }
+
+      res.status(200).json(updatedRequest);
     } catch (e) {
       next(e);
     }
