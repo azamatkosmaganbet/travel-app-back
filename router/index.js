@@ -66,4 +66,9 @@ router.put(
   userController.updateAvatar
 );
 router.put("/update/guide-status/:id", guideController.updateGuideRequestStatus)
+router.put(
+  "/update/trip/:id",
+  upload2.single("file"),
+  tripController.updateTrip
+);
 module.exports = router;

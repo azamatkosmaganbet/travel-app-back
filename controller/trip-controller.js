@@ -6,7 +6,7 @@ class TripController {
     const tripData = req.body;
     const { file } = req;
     try {
-      const trip = await TripService.createTrip(guideId, tripData, file);
+      const trip = await TripService.createTrip(tripData, file);
       res.status(201).json(trip);
     } catch (error) {
       next(error);
@@ -32,6 +32,30 @@ class TripController {
 
       res.status(200).json(trip);
     } catch (error) {
+      next(error);
+    }
+  }
+
+  async updateTrip(req, res, next) {
+    const { id } = req.params; // Извлекаем id из параметров запроса
+    // Обратите внимание, что multer добавляет файл в req.file
+    const { file } = req; 
+
+    // Создаем объект обновления, включающий в себя данные из тела запроса
+    const updateData = {
+      ...req.body,
+      // Если изображение было загружено, указываем путь к изображению в updateData
+      image: file ? file.filename : req.body.image,
+    };
+
+    try {
+      // Используем сервис для обновления поездки
+      const updatedTrip = await TripService.updateTripById(id, updateData);
+
+      // Отправляем обновленную поездку в качестве ответа клиенту
+      res.status(200).json(updatedTrip);
+    } catch (error) {
+      // Если возникла ошибка, передаем её обработчику ошибок
       next(error);
     }
   }
