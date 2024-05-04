@@ -5,6 +5,7 @@ const tripController = require("../controller/trip-controller");
 const routeController = require("../controller/route-controller");
 const stopController = require("../controller/stop-controller");
 const bookingController = require("../controller/booking-controller");
+const reviewController = require("../controller/review-controller");
 const cityController = require("../controller/city-controller");
 const router = new Router();
 const authMiddleware = require("../middlewares/auth-middleware");
@@ -58,7 +59,9 @@ router.post("/create/route", routeController.createRoute);
 router.post("/create/stop", upload2.single("file"), stopController.createStop);
 router.post("/create/booking", bookingController.createBooking);
 router.post("/create/city", upload2.single("file"), cityController.createCity);
+router.post("/create/review", reviewController.createReview);
 router.get("/cities", cityController.getCities);
+router.get("/review/:guideId", reviewController.getReviewsByUser);
 router.get("/cities/:id", cityController.getCityWithGuides);
 router.put(
   "/update/:userId",
