@@ -63,6 +63,7 @@ router.post("/create/review", reviewController.createReview);
 router.get("/cities", cityController.getCities);
 router.get("/review/:guideId", reviewController.getReviewsByUser);
 router.get("/cities/:id", cityController.getCityWithGuides);
+router.get("/booking/:userId", bookingController.getToursByUser);
 router.put(
   "/update/:userId",
   upload.single("file"),

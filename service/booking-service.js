@@ -45,6 +45,20 @@ class BookingService {
       throw error;
     }
   }
+
+  async getToursByUser(userId) {
+    try {
+      // Находим все бронирования, связанные с данным пользователем
+      const bookings = await BookingModel.find({ user: userId }).populate("tour").populate("guide").populate("user");
+      
+      // Извлекаем только туры из бронирований
+      const tours = bookings
+
+      return tours;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = new BookingService();

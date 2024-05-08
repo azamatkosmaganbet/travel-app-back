@@ -30,6 +30,16 @@ class BookingController {
       next(error);
     }
   }
+
+  async getToursByUser(req, res, next) {
+    try {
+      const { userId } = req.params;
+      const tours = await BookingService.getToursByUser(userId);
+      res.status(200).json(tours);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new BookingController();
