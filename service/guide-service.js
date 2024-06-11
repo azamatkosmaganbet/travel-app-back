@@ -61,6 +61,21 @@ class GuideService {
     return guides;
   }
 
+  async search(query) {
+    try {
+      // Параллельные запросы к коллекциям Guide и City
+      const [guides, cities] = await Promise.all([
+        UserModel.find({ name: new RegExp(query, 'i') }), // Поиск по имени гида (независимо от регистра)
+        CityModel.find({ name: new RegExp(query, 'i') })   // Поиск по названию города (независимо от регистра)
+      ]);
+
+      return { guides, cities };
+    } catch (error) {
+      console.error("Error searching guides and cities:", error);
+      throw error;
+    }
+  }
+
   // async updateGuideRequestStatus(requestId, status) {
   //   const updatedRequest = await GuideModel.findByIdAndUpdate(
   //     requestId,

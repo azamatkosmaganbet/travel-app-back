@@ -7,9 +7,11 @@ const stopController = require("../controller/stop-controller");
 const bookingController = require("../controller/booking-controller");
 const reviewController = require("../controller/review-controller");
 const cityController = require("../controller/city-controller");
+const blogController = require("../controller/blog-controller");
 const router = new Router();
 const authMiddleware = require("../middlewares/auth-middleware");
 const roleMiddleware = require("../middlewares/role-middleware");
+const messageController = require("../controller/message-controller")
 const { body } = require("express-validator");
 const { nanoid } = require("nanoid");
 const multer = require("multer");
@@ -35,6 +37,18 @@ const storage2 = multer.diskStorage({
 });
 
 const upload2 = multer({ storage: storage2 });
+
+
+const storage3 = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/blog");
+  },
+  filename: (req, file, cb) => {
+    cb(null, nanoid() + path.extname(file.originalname));
+  },
+});
+
+const upload3 = multer({ storage: storage3 });
 
 router.post("/login", userController.login);
 router.post("/logout", userController.logout);
@@ -64,15 +78,28 @@ router.get("/cities", cityController.getCities);
 router.get("/review/:guideId", reviewController.getReviewsByUser);
 router.get("/cities/:id", cityController.getCityWithGuides);
 router.get("/booking/:userId", bookingController.getToursByUser);
+router.get("/blogs", blogController.getAllPosts);
 router.put(
   "/update/:userId",
   upload.single("file"),
   userController.updateAvatar
 );
-router.put("/update/guide-status/:id", guideController.updateGuideRequestStatus)
+router.delete("/delete/blog/:postId", blogController.deletePost)
+router.post("/create/blog", upload3.array("files", 10), blogController.createPost);
+router.put(
+  "/update/guide-status/:id",
+  guideController.updateGuideRequestStatus
+);
 router.put(
   "/update/trip/:id",
   upload2.single("file"),
   tripController.updateTrip
 );
+
+router.post("/create/comment", blogController.createComment)
+router.get("/comment/:postId", blogController.getCommentsByPost)
+router.post("/like/:id", blogController.likePost)
+router.post("/unlike", blogController.unlikePost)
+router.get("/search", guideController.search)
+// router.post('/send', messageController.sendMessage);
 module.exports = router;

@@ -84,6 +84,22 @@ class GuideController {
       next(e);
     }
   }
+
+  async search(req, res, next) {
+    try {
+      const query = req.query.q; // Предполагается, что поисковый запрос передается в параметре "q"
+  
+      if (!query) {
+        return res.status(400).json({ message: "Query parameter 'q' is required" });
+      }
+  
+      const results = await guideService.search(query);
+  
+      res.status(200).json(results);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new GuideController();

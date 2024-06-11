@@ -18,7 +18,7 @@ class ReviewService {
   
     async getReviewsByUser(userId) {
       try {
-        let reviews = await Review.find({ user: userId });
+        let reviews = await Review.find({ user: userId }).populate("reviewer")
     
         if (reviews.length === 0) {
           return { reviews: [], avg: null }; // Объект с пустым массивом отзывов и средним рейтингом null
