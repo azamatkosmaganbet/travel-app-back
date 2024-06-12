@@ -82,6 +82,16 @@ class BlogController {
       next(error);
     }
   }
+
+  async getPostsByUser(req, res, next) {
+    try {
+      const { userId } = req.params;
+      const posts = await BlogService.getPostsByUser(userId);
+      res.status(200).json(posts);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new BlogController();

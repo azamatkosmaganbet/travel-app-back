@@ -25,6 +25,18 @@ class BlogService {
     }
   }
 
+  async getPostsByUser(userId) {
+    try {
+      const posts = await BlogModel.find({ author: userId }).populate("author").sort({ date: -1 }).populate({
+        path: "comments",
+        populate: { path: "author" }
+      });
+      return posts;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async deletePost(postId, userId) {
     try {
       const post = await BlogModel.findById(postId);

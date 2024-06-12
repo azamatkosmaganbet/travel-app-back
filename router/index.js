@@ -101,5 +101,6 @@ router.get("/comment/:postId", blogController.getCommentsByPost)
 router.post("/like/:id", blogController.likePost)
 router.post("/unlike", blogController.unlikePost)
 router.get("/search", guideController.search)
+router.get("/post/:userId", blogController.getPostsByUser)
 // router.post('/send', messageController.sendMessage);
 module.exports = router;
