@@ -67,6 +67,19 @@ class MailService {
       `,
     });
   }
+
+  async sendMail(to, subject, html) {
+    await this.transporter.sendMail({
+      from: "a.kosmaganbet03@gmail.com",
+      to,
+      subject,
+      text: "",
+      html,
+    });
+
+    
+    console.log("sended")
+  }
 }
 
 module.exports = new MailService();
